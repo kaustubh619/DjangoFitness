@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^uppy_image$', views.ProductUploadImage.as_view()),
     url(r'^images_gallery', views.GalleryImages.as_view({'get': 'images'})),
     url(r'^update_gallery/(?P<pk>[0-9]+)$', views.GalleryImageUpdate.as_view()),
+    url(r'^find_trainer', views.FindTrainerView.as_view({'get': 'list'})),
 ]

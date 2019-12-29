@@ -77,3 +77,15 @@ class BMRValues(models.Model):
 
     def __str__(self):
         return str(self.user) + ' ' + str(self.date_time)
+
+
+class FindTrainer(models.Model):
+    name = models.CharField(max_length=100)
+    phone = models.BigIntegerField()
+    address = models.TextField()
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    pin = models.IntegerField()
+
+    def __str__(self):
+        return str(self.name) + ' - ' + str(self.phone)

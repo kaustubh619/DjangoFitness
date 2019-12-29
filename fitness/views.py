@@ -14,11 +14,11 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from .serializers import UserSerializer, UserTypeSerializer, UserTypeUpdateSerializer, UserExtensionSerializer, \
     UserExtensionUpdateSerializer, CarouselSerializer, ContactSerializer, GallerySerializer, SubscriptionSerializer, \
-    BMRCalculatorSerializer, BMRValuesSerializer
+    BMRCalculatorSerializer, BMRValuesSerializer, FindTrainerSerializer
 from django.http import HttpResponse, Http404
 from rest_framework import viewsets, generics, status
-from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues
-from rest_framework.parsers import FileUploadParser
+from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer
+from twilio.rest import Client
 import os
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 
@@ -418,5 +418,28 @@ class GalleryImages(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@permission_classes((AllowAny,))
+class FindTrainerView(viewsets.ViewSet):
+    def list(self, request):
+        queryset = FindTrainer.objects.all()
+        serializer = FindTrainerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = FindTrainerSerializer(data=request.data)
+        account_sid = "ACa5cd6a809b1ddd9b8f111a6a9bdd9c0f"
+        auth_token = "21ea5512e4f0ccb10ae519c6b8530e17"
+        client = Client(account_sid, auth_token)
+
+        client.messages.create(
+            to="+91"+request.data['phone'],
+            from_="+19105579284",
+            body="Hii "+request.data['name']+', '+'we will find a trainer near you and contact you shortly. Join Transformers Fitness Academy today.',
+            media_url="https://climacons.herokuapp.com/clear.png")
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

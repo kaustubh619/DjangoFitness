@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues
+from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -87,6 +87,13 @@ class BMRValuesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BMRValues
+        fields = '__all__'
+
+
+class FindTrainerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FindTrainer
         fields = '__all__'
 
 
