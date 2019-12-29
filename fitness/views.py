@@ -19,6 +19,8 @@ from django.http import HttpResponse, Http404
 from rest_framework import viewsets, generics, status
 from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues
 from rest_framework.parsers import FileUploadParser
+import os
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 
 
 @csrf_exempt
@@ -351,3 +353,70 @@ class PostBMR(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def handle__uploaded_file(f):
+    if not os.path.isdir("media/uppy_images/"):
+        os.makedirs("media/uppy_images/")
+
+    with open('media/uppy_images/'+f.name, 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
+    return f.name
+
+
+@permission_classes((AllowAny,))
+class ProductUploadImage(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def get_serializer_context(self):
+        print(self.request.FILES)
+
+    def post(self, request, format=None):
+        res = {}
+
+        for i in self.request.FILES:
+            array = {}
+            array['success'] = 1
+            res['url'] = 'http://127.0.0.1:8000/media/uppy_images/' + handle__uploaded_file(self.request.FILES[i])
+            array['file'] = res
+        return Response(array)
+
+
+class GalleryImageUpdate(APIView):
+    def get_object(self, pk):
+        try:
+            return Gallery.objects.get(id=pk)
+        except Gallery.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = GallerySerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = GallerySerializer(obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GalleryImages(viewsets.ViewSet):
+    def images(self, request):
+        queryset = Gallery.objects.all()
+        serializer = GallerySerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = GallerySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+

@@ -24,4 +24,7 @@ urlpatterns = [
     url(r'^bmr_calculator/(?P<pk>[0-9]+)$', views.BMRCalculator.as_view()),
     url(r'^bmr_values/(?P<pk>[0-9]+)$', views.BMRValuesByUser.as_view()),
     url(r'^post_bmr$', views.PostBMR.as_view({'get': 'bmr_list'})),
+    url(r'^uppy_image$', views.ProductUploadImage.as_view()),
+    url(r'^images_gallery', views.GalleryImages.as_view({'get': 'images'})),
+    url(r'^update_gallery/(?P<pk>[0-9]+)$', views.GalleryImageUpdate.as_view()),
 ]

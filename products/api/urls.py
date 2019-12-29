@@ -41,6 +41,7 @@ urlpatterns = [
 
       path('product_pagination', views.ProductByPagination.as_view(), name="product_pagination"),
       url(r'^productbycategory/(?P<pk>[0-9]+)', views.ProductsByCategory.as_view()),
+      url(r'^product_image$', views.ProductUploadImage.as_view()),
 
       #frontEnd
 

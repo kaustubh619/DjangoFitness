@@ -16,6 +16,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.http import HttpResponse, Http404
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 
 class ProjectCreateView(generics.CreateAPIView):
@@ -468,4 +470,33 @@ class ProductsByCategory(generics.ListAPIView):
         product = self.get_object(pk)
         Product = ProductByCat(product, many=True, context={"request": request})
         return Response(Product.data)
+
+
+def handle_uploaded_file(f):
+    if not os.path.isdir("media/product_images/"):
+        os.makedirs("media/product_images/")
+
+    with open('media/product_images/'+f.name, 'wb+') as destination:
+            for chunk in f.chunks():
+                destination.write(chunk)
+
+    return f.name
+
+
+@permission_classes((AllowAny,))
+class ProductUploadImage(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def get_serializer_context(self):
+        print(self.request.FILES)
+
+    def post(self, request, format=None):
+        res = {}
+
+        for i in self.request.FILES:
+            array = {}
+            array['success'] = 1
+            res['url'] = 'http://127.0.0.1:8000/media/product_images/' + handle_uploaded_file(self.request.FILES[i])
+            array['file'] = res
+        return Response(array)        
 

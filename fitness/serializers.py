@@ -66,7 +66,7 @@ class GallerySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Gallery
-        fields = "__all__"
+        fields = ['id', 'gallery_images']
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -88,4 +88,5 @@ class BMRValuesSerializer(serializers.ModelSerializer):
     class Meta:
         model = BMRValues
         fields = '__all__'
+
 
