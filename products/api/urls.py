@@ -8,12 +8,12 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-      path('<slug>/', ProjectListView.as_view(), name="SingleProjectList"),
+
       path('single/<int:pk>/', ProjectIDListView.as_view(), name="ProjectIDListView"),
       path('product/delete/<int:pk>/', ProjectListViewDelete.as_view(), name="ProjectListViewDelete"),
       path('product_update/<int:pk>/', views.Product.as_view()),
 
-      path('', ProjectAllListView.as_view(), name="AllProjectList"),
+
       path('<int:seller_id>', ProjectUserListView.as_view(), name="AllProjectList"),
       path('create/product', ProjectCreateView.as_view(), name="createProduct"),
 
@@ -40,10 +40,12 @@ urlpatterns = [
       path('upload/image', ProjectUploadImage.as_view(), name="image_uploader"),
 
       path('product_pagination', views.ProductByPagination.as_view(), name="product_pagination"),
-      url(r'^productbycategory/(?P<pk>[0-9]+)', views.ProductsByCategory.as_view()),
-      url(r'^product_image$', views.ProductUploadImage.as_view()),
+      path('productbycategory/<int:pk>', views.ProductsByCategory.as_view()),
+      path('product_image', views.ProductUploadImage.as_view()),
 
-      #frontEnd
+      path('<slug>/', ProjectListView.as_view(), name="SingleProjectList"),
+
+      path('', ProjectAllListView.as_view(), name="AllProjectList"),
 
       
 
