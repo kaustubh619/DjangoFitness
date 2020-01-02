@@ -142,3 +142,5 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://localhost:3333",
 ]
+
+ALLOWED_HOSTS = ['15.206.90.63']
