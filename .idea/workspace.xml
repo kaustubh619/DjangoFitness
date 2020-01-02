@@ -30,8 +30,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fitness/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="21" column="9" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+            <state relative-caret-position="586">
+              <caret line="430" column="7" lean-forward="true" selection-start-line="430" selection-start-column="7" selection-end-line="438" selection-end-column="66" />
+              <folding>
+                <element signature="e#0#35#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -342,8 +345,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fitness/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="21" column="9" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+        <state relative-caret-position="586">
+          <caret line="430" column="7" lean-forward="true" selection-start-line="430" selection-start-column="7" selection-end-line="438" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
