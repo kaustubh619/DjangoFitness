@@ -379,7 +379,7 @@ class ProductUploadImage(APIView):
         for i in self.request.FILES:
             array = {}
             array['success'] = 1
-            res['url'] = 'http://127.0.0.1:8000/media/uppy_images/' + handle__uploaded_file(self.request.FILES[i])
+            res['url'] = 'http://15.206.195.168/media/uppy_images/' + handle__uploaded_file(self.request.FILES[i])
             array['file'] = res
         return Response(array)
 
