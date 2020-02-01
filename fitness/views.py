@@ -379,7 +379,7 @@ class ProductUploadImage(APIView):
         for i in self.request.FILES:
             array = {}
             array['success'] = 1
-            res['url'] = 'http://15.206.195.168/media/uppy_images/' + handle__uploaded_file(self.request.FILES[i])
+            res['url'] = 'http://mytruestrength/media/uppy_images/' + handle__uploaded_file(self.request.FILES[i])
             array['file'] = res
         return Response(array)
 
@@ -428,13 +428,13 @@ class FindTrainerView(viewsets.ViewSet):
 
     def post(self, request):
         serializer = FindTrainerSerializer(data=request.data)
-        account_sid = "ACa5cd6a809b1ddd9b8f111a6a9bdd9c0f"
-        auth_token = "21ea5512e4f0ccb10ae519c6b8530e17"
+        account_sid = "AC1c6cdb671e0b631652f64b97b62a15b1"
+        auth_token = "acaba65e18acd81a8ec51a338459161d"
         client = Client(account_sid, auth_token)
 
         client.messages.create(
             to="+91"+request.data['phone'],
-            from_="+19105579284",
+            from_="+19562170599",
             body="Hii "+request.data['name']+', '+'we will find a trainer near you and contact you shortly. Join Transformers Fitness Academy today.',
             media_url="https://climacons.herokuapp.com/clear.png")
         if serializer.is_valid():
