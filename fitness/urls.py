@@ -26,4 +26,6 @@ urlpatterns = [
     path('images_gallery', views.GalleryImages.as_view({'get': 'images'})),
     path('update_gallery/<int:pk>', views.GalleryImageUpdate.as_view()),
     path('find_trainer', views.FindTrainerView.as_view({'get': 'list'})),
+    path('coupon', views.GenerateCoupon.as_view({'get': 'coupon_list'})),
+    path('get_coupon/<int:pk>', views.GetCouponCodeByUser.as_view()),
 ]
