@@ -158,6 +158,7 @@ class ProjectListViewDelete(generics.DestroyAPIView):
     #     return User.objects.all(pk=pk)
 
 
+@permission_classes((AllowAny,))
 class ProjectAllListView(generics.ListAPIView):
     #
     # lookup_field            = 'pk' # slug, id
@@ -174,6 +175,7 @@ class ProjectAllListView(generics.ListAPIView):
     #     return User.objects.all(pk=pk)
 
 
+@permission_classes((AllowAny,))
 class CategoriesListView(generics.ListCreateAPIView):
     #
     # lookup_field            = 'pk' # slug, id
@@ -452,14 +454,15 @@ class Brand(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes((AllowAny,))
 class ProductByPagination(generics.ListAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductWithPaginationSerializer
     pagination_class = PostLimitOffsetPagination
 
 
+@permission_classes((AllowAny,))
 class ProductsByCategory(generics.ListAPIView):
-
     def get_object(self, pk):
         try:
             return Products.objects.filter(category=pk)
@@ -496,7 +499,7 @@ class ProductUploadImage(APIView):
         for i in self.request.FILES:
             array = {}
             array['success'] = 1
-            res['url'] = 'http://www.mytruestrength.com/backend/media/product_images/' + handle_uploaded_file(self.request.FILES[i])
+            res['url'] = 'http://mytruestrength.com/media/product_images/' + handle_uploaded_file(self.request.FILES[i])
             array['file'] = res
         return Response(array)
 
@@ -512,5 +515,5 @@ class GetProductById(generics.ListAPIView):
     def get(self, request, slug):
         obj = self.get_object(slug)
         Obj = ProductByCat(obj, context={"request": request})
-        return Response(Obj.data)         
+        return Response(Obj.data)
 
