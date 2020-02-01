@@ -19,17 +19,20 @@ class BlogCategoryView(viewsets.ViewSet):
         return Response(serializer.data)
 
 
+@permission_classes((AllowAny,))
 class BlogPostView(generics.ListAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
     pagination_class = PostLimitOffsetPagination
 
 
+@permission_classes((AllowAny,))
 class BlogPostViewWithoutPagination(generics.ListAPIView):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
 
 
+@permission_classes((AllowAny,))
 class BlogByCategory(generics.ListAPIView):
 
     def get_object(self, pk):
@@ -44,6 +47,7 @@ class BlogByCategory(generics.ListAPIView):
         return Response(Blog.data)
 
 
+@permission_classes((AllowAny,))
 class BlogCommentView(generics.ListAPIView):
     def get_object(self, pk):
         try:
@@ -57,6 +61,7 @@ class BlogCommentView(generics.ListAPIView):
         return Response(BlogComment.data)
 
 
+@permission_classes((AllowAny,))
 class BlogById(generics.ListAPIView):
     def get_object(self, slug):
         try:

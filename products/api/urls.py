@@ -47,6 +47,8 @@ urlpatterns = [
 
       path('', ProjectAllListView.as_view(), name="AllProjectList"),
 
+      path('prodbyid/<slug:slug>', views.GetProductById.as_view()),
+
       
 
 

@@ -14,10 +14,10 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from .serializers import UserSerializer, UserTypeSerializer, UserTypeUpdateSerializer, UserExtensionSerializer, \
     UserExtensionUpdateSerializer, CarouselSerializer, ContactSerializer, GallerySerializer, SubscriptionSerializer, \
-    BMRCalculatorSerializer, BMRValuesSerializer, FindTrainerSerializer
+    BMRCalculatorSerializer, BMRValuesSerializer, FindTrainerSerializer, CouponSerializer
 from django.http import HttpResponse, Http404
 from rest_framework import viewsets, generics, status
-from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer
+from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer, Coupon
 from twilio.rest import Client
 import os
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
@@ -240,11 +240,13 @@ class CarouselImageUploadView(APIView):
           return Response(carousel_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes((AllowAny,))
 class ImageView(generics.ListAPIView):
     queryset = Carousel.objects.all()
     serializer_class = CarouselSerializer
 
 
+@permission_classes((AllowAny,))
 class ContactListView(viewsets.ViewSet):
     def contactList(self, request):
         queryset = ContactModel.objects.all()
@@ -259,6 +261,7 @@ class ContactListView(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes((AllowAny,))
 class GalleryView(viewsets.ViewSet):
     def galleryImages(self, request):
         queryset = Gallery.objects.all()
@@ -266,6 +269,7 @@ class GalleryView(viewsets.ViewSet):
         return Response(serializer.data)
 
 
+@permission_classes((AllowAny,))
 class SubscriptionPlans(viewsets.ViewSet):
     def plan_list(self, request):
         queryset = SubscriptionPlan.objects.all()
@@ -379,7 +383,7 @@ class ProductUploadImage(APIView):
         for i in self.request.FILES:
             array = {}
             array['success'] = 1
-            res['url'] = 'http://mytruestrength/media/uppy_images/' + handle__uploaded_file(self.request.FILES[i])
+            res['url'] = 'http://www.mytruestrength.com/backend/media/uppy_images/' + handle__uploaded_file(self.request.FILES[i])
             array['file'] = res
         return Response(array)
 
@@ -428,14 +432,14 @@ class FindTrainerView(viewsets.ViewSet):
 
     def post(self, request):
         serializer = FindTrainerSerializer(data=request.data)
-        account_sid = "AC1c6cdb671e0b631652f64b97b62a15b1"
-        auth_token = "acaba65e18acd81a8ec51a338459161d"
+        account_sid = "ACa5cd6a809b1ddd9b8f111a6a9bdd9c0f"
+        auth_token = "21ea5512e4f0ccb10ae519c6b8530e17"
         client = Client(account_sid, auth_token)
 
         client.messages.create(
             to="+91"+request.data['phone'],
-            from_="+19562170599",
-            body="Hii "+request.data['name']+', '+'we will find a trainer near you and contact you shortly. Join Transformers Fitness Academy today.',
+            from_="+19105579284",
+            body="Hii "+request.data['name'] + ', ' + 'we will find a trainer near you and contact you shortly. Join Transformers Fitness Academy today.',
             media_url="https://climacons.herokuapp.com/clear.png")
         if serializer.is_valid():
             serializer.save()
@@ -443,3 +447,36 @@ class FindTrainerView(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GenerateCoupon(viewsets.ViewSet):
+    def coupon_list(self, request):
+        queryset = Coupon.objects.all()
+        serializer = CouponSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = CouponSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetCouponCodeByUser(APIView):
+    def get_object(self, pk):
+        try:
+            return Coupon.objects.get(user=pk)
+        except Coupon.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = CouponSerializer(obj)
+        return Response(Obj.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = CouponSerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

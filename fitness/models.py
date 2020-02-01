@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+import random
+from django.db.models.signals import pre_save
 
 
 class UserType(models.Model):
@@ -89,3 +91,24 @@ class FindTrainer(models.Model):
 
     def __str__(self):
         return str(self.name) + ' - ' + str(self.phone)
+
+
+class Coupon(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    coupon_code = models.CharField(max_length=100, null=True, blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    coupon_discount_value = models.IntegerField()
+
+    def __str__(self):
+        return str(self.user) + " " + str(self.coupon_code)
+
+
+def pre_save_post_receiver(sender, instance, *args, **kwargs):
+    if instance._state.adding:
+        coupon_code = "TFA" + str(random.randrange(1, 10 ** 8))
+        print('this is an adding')
+        instance.coupon_code = coupon_code
+
+
+pre_save.connect(pre_save_post_receiver, sender=Coupon)

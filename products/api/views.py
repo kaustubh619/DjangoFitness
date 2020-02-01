@@ -496,7 +496,21 @@ class ProductUploadImage(APIView):
         for i in self.request.FILES:
             array = {}
             array['success'] = 1
-            res['url'] = 'http://127.0.0.1:8000/media/product_images/' + handle_uploaded_file(self.request.FILES[i])
+            res['url'] = 'http://www.mytruestrength.com/backend/media/product_images/' + handle_uploaded_file(self.request.FILES[i])
             array['file'] = res
-        return Response(array)        
+        return Response(array)
+
+
+@permission_classes((AllowAny,))
+class GetProductById(generics.ListAPIView):
+    def get_object(self, slug):
+        try:
+            return Products.objects.get(slug=slug)
+        except Products.DoesNotExist:
+            raise Http404
+
+    def get(self, request, slug):
+        obj = self.get_object(slug)
+        Obj = ProductByCat(obj, context={"request": request})
+        return Response(Obj.data)         
 

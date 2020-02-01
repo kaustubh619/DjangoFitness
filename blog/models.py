@@ -28,9 +28,6 @@ class BlogPost(models.Model):
 
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
     slug = slugify(instance.title)
-    # exists = BlogPost.objects.filter(slug=slug).exists()
-    # if exists:
-    #     slug = "%s-%s" % (slug, uuid.uuid4())
     instance.slug = slug
 
 
