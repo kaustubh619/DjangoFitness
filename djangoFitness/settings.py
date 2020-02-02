@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'blog',
     'cart',
     'orders',
+    'trainerApp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

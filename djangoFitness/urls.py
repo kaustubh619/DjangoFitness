@@ -25,4 +25,6 @@ urlpatterns = [
     path('backend/', include('products.api.urls')),
     path('backend/', include('cart.urls')),
     path('backend/', include('orders.urls')),
+    path('backend/', include('trainerApp.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
