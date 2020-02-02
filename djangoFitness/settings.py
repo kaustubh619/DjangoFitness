@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['15.206.195.168', 'localhost', 'mytruestrength.com', 'www.mytruestrength.com']
 
+APPEND_SLASH=False
+
 # Application definition
 
 INSTALLED_APPS = [
