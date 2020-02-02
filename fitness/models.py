@@ -112,3 +112,15 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 
 
 pre_save.connect(pre_save_post_receiver, sender=Coupon)
+
+
+class UserSubscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=100)
+    phone = models.BigIntegerField()
+    email = models.EmailField()
+    address = models.TextField()
+
+    def __str__(self):
+        return str(self.user) + ", " + str(self.plan)

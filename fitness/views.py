@@ -14,10 +14,10 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from .serializers import UserSerializer, UserTypeSerializer, UserTypeUpdateSerializer, UserExtensionSerializer, \
     UserExtensionUpdateSerializer, CarouselSerializer, ContactSerializer, GallerySerializer, SubscriptionSerializer, \
-    BMRCalculatorSerializer, BMRValuesSerializer, FindTrainerSerializer, CouponSerializer
+    BMRCalculatorSerializer, BMRValuesSerializer, FindTrainerSerializer, CouponSerializer, UserSubscriptionSerializer
 from django.http import HttpResponse, Http404
 from rest_framework import viewsets, generics, status
-from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer, Coupon
+from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer, Coupon, UserSubscription
 from twilio.rest import Client
 import os
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
@@ -479,4 +479,18 @@ class GetCouponCodeByUser(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserSubscriptionPost(viewsets.ViewSet):
+    def s_list(self, request):
+        queryset = UserSubscription.objects.all()
+        serializer = UserSubscriptionSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = UserSubscriptionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

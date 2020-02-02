@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer, Coupon
+from .models import UserType, UserExtension, Carousel, ContactModel, Gallery, SubscriptionPlan, BMRValues, FindTrainer, Coupon, UserSubscription
 
 admin.site.register(UserType)
 admin.site.register(UserExtension)
@@ -10,3 +10,4 @@ admin.site.register(SubscriptionPlan)
 admin.site.register(BMRValues)
 admin.site.register(FindTrainer)
 admin.site.register(Coupon)
+admin.site.register(UserSubscription)

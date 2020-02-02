@@ -28,4 +28,5 @@ urlpatterns = [
     path('find_trainer', views.FindTrainerView.as_view({'get': 'list'})),
     path('coupon', views.GenerateCoupon.as_view({'get': 'coupon_list'})),
     path('get_coupon/<int:pk>', views.GetCouponCodeByUser.as_view()),
+    path('user_sub', views.UserSubscriptionPost.as_view({'get': 's_list'})),
 ]
