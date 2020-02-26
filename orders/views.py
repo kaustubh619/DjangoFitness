@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import random
 #
-import environ
+
 import razorpay
 import datetime
 import json
